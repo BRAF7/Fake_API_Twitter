@@ -12,13 +12,19 @@ class UserBase(BaseModel):
     user_id: UUID  = Field(...)
     email : EmailStr = Field(...)
 
-class UserLogin(UserBase):
+
+
+
+class PasswordBase(BaseModel):
     password : str = Field(
         ...,
         min_length = 8,
         max_length = 64,
         example='12345678'
     )
+
+class UserLogin(UserBase, PasswordBase):
+    pass
 
 class User(UserBase):
     first_name : str = Field(
@@ -34,7 +40,16 @@ class User(UserBase):
         max_length = 50,
         example='Pascacio'
     )
-    birth_date : Optional(date) = Field(default=None)
+    birth_date : Optional[date] = Field(default=None)
+
+
+
+
+class UserRegister(User,PasswordBase):
+    pass
+
+
+
 
 class Tweet(BaseModel):
     tweet_id : UUID = Field(...)
@@ -42,8 +57,8 @@ class Tweet(BaseModel):
         ...,
         min_length=1,
         max_length=256,
-        examples = 'Hello I´m tweet'
+        example = 'Hello I´m tweet'
     )
     created_at : datetime = Field(default= datetime.now())
-    updated_at : Optional(datetime) = Field(defaul=None)
+    updated_at : Optional[datetime] = Field(defaul=None)
     by : User = Field(...)
